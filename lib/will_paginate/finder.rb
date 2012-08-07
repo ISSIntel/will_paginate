@@ -65,7 +65,7 @@ module WillPaginate
         options = args.pop
         page, per_page, total_entries = wp_parse_options(options)
         finder = (options[:finder] || 'find').to_s
-        custom_offset = options[:custom_offset]
+        offset = options[:offset]
 
         if finder == 'find'
           # an array of IDs may have been given:
@@ -76,7 +76,7 @@ module WillPaginate
 
         WillPaginate::Collection.create(page, per_page, total_entries) do |pager|
           count_options = options.except :page, :per_page, :total_entries, :finder
-          find_options = count_options.except(:count).update(:offset => (custom_offset || pager.offset), :limit => pager.per_page)
+          find_options = count_options.except(:count).update(:offset => (offset || pager.offset), :limit => pager.per_page)
 
           args << find_options
           # @options_from_last_find = nil
